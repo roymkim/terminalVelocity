@@ -1,5 +1,5 @@
-# terminalVelocity
-APCS Semester 2 Final Project
+### terminalVelocity
+#APCS Semester 2 Final Project
 by Anthony Zeng and Roy Kim
 
 Tasks:
