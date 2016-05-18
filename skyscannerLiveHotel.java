@@ -7,6 +7,8 @@ import javax.net.ssl.HttpsURLConnection;
 import java.util.Map;
 import java.util.LinkedHashMap;
 import java.net.URLEncoder;
+import java.net.*;
+import java.io.*;
 
 public class skyscannerLiveHotel{
     private final String apiKey;
@@ -20,7 +22,7 @@ public class skyscannerLiveHotel{
     private final int rooms;
 
     private static final String USER_AGENT = "Mozilla/5.0";
-    private String url = "http://partners.api.skyscanner.net/apiservices/hotels/liveprices/v2";
+    private String site = "http://partners.api.skyscanner.net/apiservices/hotels/liveprices/v2";
 
     public skyscannerLiveHotel(String apiKey, String market, String currency, String locale, String entityid, String checkindate, String checkoutdate, int guests, int rooms){
 	this.apiKey = apiKey;
@@ -34,6 +36,7 @@ public class skyscannerLiveHotel{
 	this.rooms = rooms;
 	try {
 	    createSession();
+	    System.out.println("Hello");
 	} catch (Exception e){
 	}
     }
@@ -43,20 +46,39 @@ public class skyscannerLiveHotel{
     }
 
     private boolean createSession() throws Exception{
-	url+="/"+market+"/"+currency+"/"+locale+"/"+entityid+"/"+checkindate+"/"+checkoutdate+"/"+guests+"/"+rooms+"?apiKey="+apiKey;
-	URL obj = new URL(url);
-	HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
+	StringBuilder result = new StringBuilder();
+	site+="/"+market+"/"+currency+"/"+locale+"/"+entityid+"/"+checkindate+"/"+checkoutdate+"/"+guests+"/"+rooms+"?apiKey="+apiKey;
+	//System.out.println(site);
+	URL url = new URL(site);
+	HttpURLConnection con = (HttpURLConnection) url.openConnection();
 	con.setRequestMethod("GET");
-	con.setRequestProperty("User-Agent", USER_AGENT);    
+	BufferedReader rd = new BufferedReader(new InputStreamReader(con.getInputStream()));
+	String line;
+	while ((line = rd.readLine()) != null){
+	    result.append(line);
+	}
+	rd.close();
+	con.connect();
+	System.out.println("test");
+	int code = con.getResponseCode();
+	
+	//con.setRequestProperty("User-Agent", USER_AGENT);    
 
-	int responseCode = con.getResponseCode();
-	System.out.println("Response code :" + responseCode);
+	//int responseCode = con.getResponseCode();
+	System.out.println(code);
+	/*System.out.println("Response code :" + responseCode);
 
 	if (responseCode == 302){
 	    return true;
 	} else {
 	    return false;
-	}   
-   }
+	    } */
+	return true;
+    }
+    
+    
+
+    public static void main(String[]args){
+	skyscannerLiveHotel h = new skyscannerLiveHotel("an318955594945738134979842887915", "27539733", "2016-05-18", "2016-05-21", 2, 1);
+    }
 }
