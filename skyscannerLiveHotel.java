@@ -27,6 +27,7 @@ public class skyscannerLiveHotel{
 	this.rooms = rooms;
 	try {
 	    createSession();
+	    pollSession();
 	} catch (Exception e){
 	}
     }
@@ -35,9 +36,8 @@ public class skyscannerLiveHotel{
 	this(apiKey, "UK", "EUR", "en-GB", entityid, checkindate, checkoutdate, guests, rooms);
     }
 
-    private boolean createSession() throws Exception{
+    public void createSession() throws Exception{
 	site+="/"+market+"/"+currency+"/"+locale+"/"+entityid+"/"+checkindate+"/"+checkoutdate+"/"+guests+"/"+rooms+"?apiKey="+apiKey;
-	//System.out.println(site);
 	URL url = new URL(site);
 	System.out.println(url);
 	HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -45,11 +45,23 @@ public class skyscannerLiveHotel{
 	con.connect();
 	int code = con.getResponseCode();
 	System.out.println(code);
-	return true;
     }
-    
-    
 
+    public void pollSession() throws Exception{
+	StringBuilder result = new StringBuilder();
+	URL url = new URL(site);
+	HttpURLConnection con = (HttpURLConnection) url.openConnection();
+	con.setRequestMethod("GET");
+	BufferedReader rd = new BufferedReader(new InputStreamReader(con.getInputStream()));
+	String line;
+	while ((line = rd.readLine()) != null){
+	    result.append(line);
+	}
+	rd.close();
+	System.out.println(result.toString());
+    }
+
+    
     public static void main(String[]args){
 	skyscannerLiveHotel h = new skyscannerLiveHotel("prtl6749387986743898559646983194", "27539733", "2016-05-23", "2016-05-25", 2, 1);
     }
