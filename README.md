@@ -10,6 +10,7 @@ We are trying to create a terminal search engine that is able to look up prices 
 
 ##Problems:
 * We originally had a lot of trouble setting up the API
+* skyscanner, the company who is providing us the API, had requests done in python and not in java. We spent some time trying to create requests for java.
 * Our objective now is to take the response from the servers and turn it into a readable format 
 
 ##Development Log:
@@ -37,3 +38,4 @@ We are trying to create a terminal search engine that is able to look up prices 
 * Response from the servers are successful
 * Commited a JSON parsing library
   
+### 5/23/2016
