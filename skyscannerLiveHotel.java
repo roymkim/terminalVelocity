@@ -54,7 +54,7 @@ public class skyscannerLiveHotel{
 
 	int responseCode = con.getResponseCode();
 	if (responseCode == 200) {
-	    System.out.println("Results found:");
+	    System.out.println("Results found for location: " + entityid + " for dates: " + checkindate + " - " + checkoutdate);
 	    System.out.println();
 	}
     }
@@ -122,6 +122,11 @@ public class skyscannerLiveHotel{
     }
 
     public static void main(String[]args){
+	if (args.length >= 3) {
+	    skyscannerLiveHotel h = new skyscannerLiveHotel("prtl6749387986743898559646983194", args[0], args[1], args[2], 2, 1);
+	} else {
 	skyscannerLiveHotel h = new skyscannerLiveHotel("prtl6749387986743898559646983194", "27544008", "2016-07-23", "2016-07-25", 2, 1);
+	}
     }
+
 }
