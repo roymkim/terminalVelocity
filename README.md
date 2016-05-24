@@ -39,3 +39,4 @@ We are trying to create a terminal search engine that is able to look up prices 
 * Commited a JSON parsing library
   
 ### 5/23/2016
+* Added a location AutoSuggest
