@@ -1,19 +1,19 @@
- import java.net.*;
+import java.net.*;
 import java.io.*;
 import com.eclipsesource.json.*;
 
 public class skyscannerLiveHotel{
-    private final String apiKey;
-    private final String market;
-    private final String currency;
-    private final String locale;
-    private final String entityid;
-    private final String checkindate;
-    private final String checkoutdate;
-    private final int guests;
-    private final int rooms;
+    private String apiKey;
+    private String market;
+    private String currency;
+    private String locale;
+    private String entityid;
+    private String checkindate;
+    private String checkoutdate;
+    private int guests;
+    private int rooms;
 
-    private static final String USER_AGENT = "Mozilla/5.0";
+    private static String  USER_AGENT = "Mozilla/5.0";
     private String url = "http://partners.api.skyscanner.net/apiservices/hotels/liveprices/v2";
 
     public skyscannerLiveHotel(String apiKey, String market, String currency, String locale, String entityid, String checkindate, String checkoutdate, int guests, int rooms){
