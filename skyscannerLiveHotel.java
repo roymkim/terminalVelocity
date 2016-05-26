@@ -111,12 +111,19 @@ public class skyscannerLiveHotel{
 	    entry++;
 	}
 
+	System.out.format("%-4s%-64s%-24s%-24s%n", "#", "Hotel Name", "Star Rating", "Total Price");
+	System.out.println("---------------------------------------------------------------------------------------------------");
 	for (int i = 0; i < hotelNames.length; i++) {
+	    String entryNum = i + ".";
+	    String entryName = hotelNames[i];
+	    String entryStars = hotelStars[i];
+	    String entryPrice = "$" + hotelPrices[i];
 	    String resultEntry = " ";
 	    resultEntry += hotelNames[i] + "  ";
 	    resultEntry += hotelStars[i] + "  ";
 	    resultEntry += "$" + hotelPrices[i];
-	    System.out.println(resultEntry);
+	    
+	    System.out.format("%-4s%-64s%-24s%-24s%n", entryNum, entryName, entryStars, entryPrice);
 	}
 
     }
