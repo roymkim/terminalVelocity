@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
 import java.net.URLEncoder;
 
 
-public class skyscannerLiveFlight {
+public class skyscannerFlight {
 
     private String apiKey;
     private String country;

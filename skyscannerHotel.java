@@ -2,7 +2,7 @@
 import java.io.*;
 import com.eclipsesource.json.*;
 
-public class skyscannerLiveHotel{
+public class skyscannerHotel{
     private final String apiKey;
     private final String market;
     private final String currency;
