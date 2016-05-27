@@ -1,16 +1,8 @@
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import javax.net.ssl.HttpsURLConnection;
-import java.util.Map;
-import java.util.LinkedHashMap;
-import java.net.URLEncoder;
-
+import java.net.*;
+import java.io.*;
+import com.eclipsesource.json.*;
 
 public class skyscannerLiveFlight {
-
     private String apiKey;
     private String country;
     private String currency;
@@ -147,7 +139,6 @@ public class skyscannerLiveFlight {
 	in.close();
 
 	System.out.println(response.toString());
-
     }
 
     public static void main(String[] args) {
