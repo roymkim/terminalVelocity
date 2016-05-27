@@ -1,8 +1,9 @@
+
 import java.net.*;
 import java.io.*;
 import com.eclipsesource.json.*;
 
-public class skyscannerLiveHotel{
+public class skyscannerLiveHotel extends JsonObject{
     private String apiKey;
     private String market;
     private String currency;
@@ -13,7 +14,7 @@ public class skyscannerLiveHotel{
     private int guests;
     private int rooms;
 
-    private static String  USER_AGENT = "Mozilla/5.0";
+    private static final String USER_AGENT = "Mozilla/5.0";
     private String url = "http://partners.api.skyscanner.net/apiservices/hotels/liveprices/v2";
 
     public skyscannerLiveHotel(String apiKey, String market, String currency, String locale, String entityid, String checkindate, String checkoutdate, int guests, int rooms){
@@ -60,7 +61,6 @@ public class skyscannerLiveHotel{
     }
 
     public String pollSession() throws Exception{
-
 	String params = buildParameters();
 	URL urlObj = new URL(url + params);
 
@@ -82,18 +82,18 @@ public class skyscannerLiveHotel{
     private void parseResult(String result) {
 	String[] hotelNames = new String[10];
 	String[] hotelStars = new String[10];
+	String[] hotelTypes = new String[10];
 	int[] hotelPrices = new int[10];
 
 	JsonObject resultObj = Json.parse(result).asObject();
-
+		
 	JsonArray hotels_prices = resultObj.get("hotels_prices").asArray();
 	JsonArray hotels = resultObj.get("hotels").asArray();
-      
-
+	//System.out.println(hotels.get(0).asObject().get("types").asArray().toString());
 	int entry = 0;
 	for(JsonValue hotel: hotels) {
 	    //Hotel Name
-	    hotelNames[entry] = hotel.asObject().getString("name", "idk");
+	    hotelNames[entry] = hotel.asObject().getString("name", "N/A");
 
 	    //Hotel Stars
 	    int stars = hotel.asObject().getInt("star_rating", 1);
@@ -106,7 +106,10 @@ public class skyscannerLiveHotel{
 	    //Hotel Price
 	    JsonObject hotel_price = hotels_prices.get(entry).asObject();
 	    JsonArray agent_prices = hotel_price.get("agent_prices").asArray();
-	    hotelPrices[entry] = agent_prices.get(0).asObject().getInt("price_total", 1);
+	    hotelPrices[entry] = agent_prices.get(0).asObject().getInt("price_total", 0);
+
+	    //Hotel Type
+      	    hotelTypes[entry] = hotel.asObject().get("types").asArray().get(0).toString();
 
 	    entry++;
 	}
@@ -115,7 +118,8 @@ public class skyscannerLiveHotel{
 	    String resultEntry = " ";
 	    resultEntry += hotelNames[i] + "  ";
 	    resultEntry += hotelStars[i] + "  ";
-	    resultEntry += "$" + hotelPrices[i];
+	    resultEntry += "$" + hotelPrices[i] + "  ";
+	    resultEntry += hotelTypes[i];
 	    System.out.println(resultEntry);
 	}
 
