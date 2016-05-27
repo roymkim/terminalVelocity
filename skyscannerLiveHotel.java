@@ -74,7 +74,7 @@ public class skyscannerLiveHotel{
 	    result.append(line);
 	}
 	rd.close();
-	System.out.println(result);
+	
 	return result.toString();
 
     }
@@ -82,7 +82,9 @@ public class skyscannerLiveHotel{
     private void parseResult(String result) {
 	String[] hotelNames = new String[10];
 	String[] hotelStars = new String[10];
-	int[] hotelPrices = new int[10];
+	String[] hotelPrices = new String[10];
+	String[] hotelIDs = new String[10];
+	String[] agentIDs = new String[10];
 
 	JsonObject resultObj = Json.parse(result).asObject();
 
@@ -105,24 +107,29 @@ public class skyscannerLiveHotel{
 	    
 	    //Hotel Price
 	    JsonObject hotel_price = hotels_prices.get(entry).asObject();
-	    JsonArray agent_prices = hotel_price.get("agent_prices").asArray();
-	    hotelPrices[entry] = agent_prices.get(0).asObject().getInt("price_total", 1);
+	    hotelIDs[entry] = Integer.toString(hotel_price.getInt("id", 0));
+	    System.out.println(hotelIDs[entry]);
 
+	    JsonArray agent_prices = hotel_price.get("agent_prices").asArray();
+	    agentIDs[entry] = Integer.toString(agent_prices.get(0).asObject().getInt("id", 0));
+	    hotelPrices[entry] = Integer.toString(agent_prices.get(0).asObject().getInt("price_total", 0));
+	    System.out.println(agentIDs[entry]);
+	    
 	    entry++;
 	}
 
-	System.out.format("%-4s%-64s%-24s%-24s%n", "#", "Hotel Name", "Star Rating", "Total Price");
-	System.out.println("---------------------------------------------------------------------------------------------------------");
+	System.out.format("%-4s%-48s%-18s%-18s%n", "#", "Hotel Name", "Star Rating", "Price");
+	System.out.println("-------------------------------------------------------------------------------------");
 
 	for (int i = 0; i < hotelNames.length; i++) {
 	    String entryNum = i + ".";
 	    String entryName = hotelNames[i];
 	    String entryStars = hotelStars[i];
 	    String entryPrice = "$" + hotelPrices[i];
-	    System.out.format("%-4s%-64s%-24s%-24s%n", entryNum, entryName, entryStars, entryPrice);
+	    System.out.format("%-4s%-48s%-18s%-18s%n", entryNum, entryName, entryStars, entryPrice);
 	}
 
-	System.out.println("---------------------------------------------------------------------------------------------------------");
+	System.out.println("-------------------------------------------------------------------------------------");
 	System.out.println();
     }
 
