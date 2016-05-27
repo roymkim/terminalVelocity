@@ -2,7 +2,7 @@ import java.net.*;
 import java.io.*;
 import com.eclipsesource.json.*;
 
-public class skyscannerHotelsAutosuggestService{
+public class skyscannerAutoSuggest{
     private String market;
     private String currency;
     private String locale;
