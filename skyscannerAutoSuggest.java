@@ -68,7 +68,30 @@ public class skyscannerAutoSuggest{
 	return result.toString();
     }
 
+    public void parseResult(String result){
+	ArrayList<String> cityNames = new ArrayList<String>;
+	ArrayList<String> countryNames = new ArrayList<String>;
+    
+	JsonObject resultObj = Json.parse(result).asObject();
+
+	JsonArray places = resultObj.get("places").asArray();
+	JsonArray results = resultObj.get("results").asArray();
+
+	for (JsonValue place : places){
+	    cityNames.add(places.asObject().getString("city_name", "N/A"));
+	    countryNames.add(places.asObject().getString("country_name", "N/A"));
+	}
+
+	System.out.format("%-4s%-48s%-18s%-18s%n", "#", "City", "Country");
+	System.out.println("-------------------------------------------------------------------------------------");
+
+	for (int i = 0; i < cityNames.size(); i++){
+	    String entryCity;
+	}
+    }
+
+
     public static void main(String[]args){
-	skyscannerAutoSuggest t = new skyscannerAutoSuggest("bleh", "prtl6749387986743898559646983194");
+	skyscannerAutoSuggest t = new skyscannerAutoSuggest("bu", "prtl6749387986743898559646983194");
     }
 }
