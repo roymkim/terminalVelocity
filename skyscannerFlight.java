@@ -10,7 +10,6 @@ import java.net.URLEncoder;
 
 
 public class skyscannerFlight {
-
     private String apiKey;
     private String country;
     private String currency;
@@ -29,7 +28,7 @@ public class skyscannerFlight {
     private String url = "http://partners.api.skyscanner.net/apiservices/pricing/v1.0";
     private String sessionURL;
 
-    public skyscannerLiveFlight(String apiKey, String country, String currency, String locale, String originplace, String destinationplace, String outbounddate, String inbounddate, String cabinclass, int adults, int children, int infants, boolean groupPricing) {
+    public skyscannerFlight(String apiKey, String country, String currency, String locale, String originplace, String destinationplace, String outbounddate, String inbounddate, String cabinclass, int adults, int children, int infants, boolean groupPricing) {
 	this.apiKey = apiKey;
 	this.country = country;
 	this.currency = currency;
@@ -52,7 +51,7 @@ public class skyscannerFlight {
 	}
     }
 
-    public skyscannerLiveFlight(String apiKey, String originplace, String destinationplace, String outbounddate, String inbounddate, String cabinclass, int adults, int children, int infants) {
+    public skyscannerFlight(String apiKey, String originplace, String destinationplace, String outbounddate, String inbounddate, String cabinclass, int adults, int children, int infants) {
 	this(apiKey, "US", "USD", "en-US", originplace, destinationplace, outbounddate, inbounddate, cabinclass, adults, children, infants, true);
     }
 
@@ -151,7 +150,7 @@ public class skyscannerFlight {
     }
 
     public static void main(String[] args) {
-	skyscannerLiveFlight f = new skyscannerLiveFlight("an318955594945738134979842887915", "JFK-sky", "LAX-sky", "2016-06-20", "", "Economy", 1, 0, 0);
+	skyscannerFlight f = new skyscannerFlight("an318955594945738134979842887915", "JFK-sky", "LAX-sky", "2016-06-20", "", "Economy", 1, 0, 0);
 	System.out.println(f.sessionURL);
 	try{
 	    f.pollSession();

@@ -12,7 +12,7 @@ public class skyscannerAutoSuggest{
     private static final String USER_AGENT = "Mozilla/5.0";
     private String url = "http://partners.api.skyscanner.net/apiservices/hotels/autosuggest/v2";
     
-    public skyscannerHotelsAutosuggestService(String market, String currency, String locale, String query, String apiKey){
+    public skyscannerAutoSuggest(String market, String currency, String locale, String query, String apiKey){
 	this.market = market;
 	this.currency = currency;
 	this.locale = locale;
@@ -26,7 +26,7 @@ public class skyscannerAutoSuggest{
 	}
     }
 
-    public skyscannerHotelsAutosuggestService(String query, String apiKey){
+    public skyscannerAutoSuggest(String query, String apiKey){
 	this("UK", "EUR", "en-GB", query, apiKey);
     }
     
@@ -69,6 +69,6 @@ public class skyscannerAutoSuggest{
     }
 
     public static void main(String[]args){
-	skyscannerHotelsAutosuggestService t = new skyscannerHotelsAutosuggestService("bleh", "prtl6749387986743898559646983194");
+	skyscannerAutoSuggest t = new skyscannerAutoSuggest("bleh", "prtl6749387986743898559646983194");
     }
 }
