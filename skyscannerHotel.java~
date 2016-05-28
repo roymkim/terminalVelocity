@@ -115,7 +115,6 @@ public class skyscannerHotel{
 	    hotelPrices[entry] = Integer.toString(agent_prices.get(0).asObject().getInt("price_total", 0));
 	    System.out.println(agentIDs[entry]);
 	    
-	    //Hotel Type
 	    entry++;
 	}
 
