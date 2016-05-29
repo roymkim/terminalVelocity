@@ -1,6 +1,7 @@
 import java.net.*;
 import java.io.*;
 import com.eclipsesource.json.*;
+import java.util.*;
 
 public class skyscannerAutoSuggest{
     private String market;
@@ -21,6 +22,7 @@ public class skyscannerAutoSuggest{
 	try{
 	    createSession();
 	    String results = pollSession();
+	    parseResult(results);
 	} catch (Exception e){
 	    System.out.println(e);
 	}
@@ -64,30 +66,39 @@ public class skyscannerAutoSuggest{
 	    result.append(line);
 	}
 	rd.close();
-	System.out.println(result);
+	//System.out.println(result);
 	return result.toString();
     }
 
     public void parseResult(String result){
-	ArrayList<String> cityNames = new ArrayList<String>;
-	ArrayList<String> countryNames = new ArrayList<String>;
-    
+	ArrayList<String> cityNames = new ArrayList<String>();
+	ArrayList<String> countryNames = new ArrayList<String>();
+
 	JsonObject resultObj = Json.parse(result).asObject();
 
+	System.out.println(resultObj.toString());
+
+	System.out.println();
 	JsonArray places = resultObj.get("places").asArray();
 	JsonArray results = resultObj.get("results").asArray();
-
+	System.out.println();
 	for (JsonValue place : places){
-	    cityNames.add(places.asObject().getString("city_name", "N/A"));
-	    countryNames.add(places.asObject().getString("country_name", "N/A"));
+	    cityNames.add(place.asObject().getString("city_name", "N/A"));
+	    countryNames.add(place.asObject().getString("country_name", "N/A"));
 	}
-
-	System.out.format("%-4s%-48s%-18s%-18s%n", "#", "City", "Country");
+	System.out.println();
+	System.out.format("%-4s%-48s%-18s%n", "#", "City", "Country");
 	System.out.println("-------------------------------------------------------------------------------------");
 
 	for (int i = 0; i < cityNames.size(); i++){
-	    String entryCity;
+	    String entryNum = i + 1 + ".";
+	    String entryCity = cityNames.get(i);
+	    String entryCountry = countryNames.get(i);
+	    System.out.format("%-4s%-48s%-18s%n", entryNum, entryCity, entryCountry);
 	}
+
+	System.out.println("-------------------------------------------------------------------------------------");
+	System.out.println();
     }
 
 
