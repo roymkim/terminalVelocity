@@ -7,11 +7,10 @@ public class HotelSession implements Serializable{
     public String sessionURL;
     public String parameters;
 
-    public HotelSession(String sessionURL, String parameters) {
+    public HotelSession(String sessionURL) {
 	entries = new HotelEntry[100];
-	numsHotels = 0;
+	numHotels = 0;
 	this.sessionURL = sessionURL;
-	this.parameters = parameters;
     }
 
     public boolean addEntry(HotelEntry entry) {

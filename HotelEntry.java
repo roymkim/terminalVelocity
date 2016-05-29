@@ -7,12 +7,11 @@ public class HotelEntry {
     private String price;
     private String type;
 
-    public HotelEntry(String name, String hotel_id, String agent_id, String stars, String price, String type) {
+    public HotelEntry(String name, String hotel_id, String agent_id, String stars, String price) {
 	this.name = name;
 	this.hotel_id = hotel_id;
 	this.agent_id = agent_id;
 	this.stars = stars;
-	this.type = type;
     }
 
     public String getName() {
@@ -28,7 +27,7 @@ public class HotelEntry {
     }
 
     public String getStars() {
-	return stars;
+ 	return stars;
     }
 
     public String getPrice() {
