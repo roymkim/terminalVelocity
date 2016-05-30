@@ -2,11 +2,10 @@ import java.io.Serializable;
 
 public class HotelSession implements Serializable{
 
-    public HotelEntry[] entries;
-    public int numHotels;
-    public String sessionURL;
-    public String parameters;
-
+    private HotelEntry[] entries;
+    private int numHotels;
+    private String sessionURL;
+    
     public HotelSession(String sessionURL) {
 	entries = new HotelEntry[100];
 	numHotels = 0;
@@ -18,11 +17,24 @@ public class HotelSession implements Serializable{
 	    return false;
 	}
         entries[numHotels] = entry;
+	numHotels++;
 	return true;
     }
     
     private boolean checkSessionIsValid() {
 	return false;
+    }
+
+    public HotelEntry[] getEntries() {
+	return entries;
+    }
+
+    public int getNumHotels() {
+	return numHotels;
+    }
+
+    public String getSessionURL() {
+	return sessionURL;
     }
 
 }

@@ -16,6 +16,8 @@ public class skyscannerHotel{
     private String checkoutdate;
     private int guests;
     private int rooms;
+
+    private HotelSession sessionObj;
     
     public skyscannerHotel(String apiKey, String market, String currency, String locale, String entityid, String checkindate, String checkoutdate, int guests, int rooms){
 	this.apiKey = apiKey;
@@ -27,31 +29,24 @@ public class skyscannerHotel{
 	this.checkoutdate = checkoutdate;
 	this.guests = guests;
 	this.rooms = rooms;
-	try {
-	    createSession();
-	    String results = pollSession();
-	    parseResult(results);
-	} catch (Exception e){
-	    System.out.println(e);
-	}
     }
     
     public skyscannerHotel(String apiKey, String entityid, String checkindate, String checkoutdate, int guests, int rooms){
 	this(apiKey, "UK", "EUR", "en-GB", entityid, checkindate, checkoutdate, guests, rooms);
     }
-
+    
     public String buildParameters() {
 	String params = "/"+market+"/"+currency+"/"+locale+"/"+entityid+"/"+checkindate+"/"+checkoutdate+"/"+guests+"/"+rooms+"?apiKey="+apiKey;
 	return params;
     }
-
+    
     public void createSession() throws Exception{
 	String params = buildParameters();
 	URL urlObj = new URL(URL + params);
 	HttpURLConnection con = (HttpURLConnection) urlObj.openConnection();
 	con.setRequestMethod("GET");
 	con.connect();
-
+	
 	int responseCode = con.getResponseCode();
 	if (responseCode == 200) {
 	    
@@ -63,14 +58,16 @@ public class skyscannerHotel{
 	    }
 	    rd.close();
 
+	    sessionObj = new HotelSession(URL);
+
 	    System.out.println("Results found for location: " + entityid + " for dates: " + checkindate + " - " + checkoutdate);
 	    System.out.println();
 	}
-
+	
     }
-
+    
     public String pollSession() throws Exception{
-
+	
 	String params = buildParameters();
 	URL urlObj = new URL(URL + params);
 	
@@ -89,7 +86,7 @@ public class skyscannerHotel{
 	
     }
 
-    private HotelSession parseResult(String result) {
+    public HotelSession parseResult(String result) {
 	String[] hotelNames = new String[10];
 	String[] hotelStars = new String[10];
 	String[] hotelPrices = new String[10];
@@ -101,8 +98,7 @@ public class skyscannerHotel{
 	JsonArray hotels_prices = resultObj.get("hotels_prices").asArray();
 	JsonArray hotels = resultObj.get("hotels").asArray();
       
-	HotelSession sessionObj = new HotelSession(URL);
-
+	
 	int entry = 0;
 	for(JsonValue hotel: hotels) {
 	    //Hotel Name
@@ -126,11 +122,10 @@ public class skyscannerHotel{
 
 	    entry++;
 	}
-
-	
+	/*
 	System.out.format("%-4s%-48s%-18s%-18s%n", "#", "Hotel Name", "Star Rating", "Price");
 	System.out.println("----------------------------------------------------------------------------");
-
+	*/
 	for (int i = 0; i < hotelNames.length; i++) {
 	    String entryNum = i + ".";
 	    String entryName = hotelNames[i];
@@ -139,14 +134,15 @@ public class skyscannerHotel{
 	    HotelEntry e = new HotelEntry(hotelNames[i], hotelIDs[i], agentIDs[i], hotelStars[i], hotelPrices[i]);
 	    sessionObj.addEntry(e);
 
-	    System.out.format("%-4s%-48s%-18s%-18s%n", entryNum, entryName, entryStars, entryPrice);
+	    //System.out.format("%-4s%-48s%-18s%-18s%n", entryNum, entryName, entryStars, entryPrice);
 	}
-
+	/*
 	System.out.println("----------------------------------------------------------------------------");
 	System.out.println();
-    
+	*/
+
 	return sessionObj;
-    
+	
     }
     public static void main(String[]args){
 	if (args.length >= 3) {
