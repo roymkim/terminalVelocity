@@ -73,6 +73,7 @@ public class skyscannerAutoSuggest{
     public void parseResult(String result){
 	ArrayList<String> cityNames = new ArrayList<String>();
 	ArrayList<String> countryNames = new ArrayList<String>();
+	ArrayList<String> placeIDs = new ArrayList<String>();
 
 	JsonObject resultObj = Json.parse(result).asObject();
 
@@ -81,20 +82,23 @@ public class skyscannerAutoSuggest{
 	System.out.println();
 	JsonArray places = resultObj.get("places").asArray();
 	JsonArray results = resultObj.get("results").asArray();
-	System.out.println();
+
 	for (JsonValue place : places){
 	    cityNames.add(place.asObject().getString("city_name", "N/A"));
 	    countryNames.add(place.asObject().getString("country_name", "N/A"));
+	    placeIDs.add(Integer.toString(place.asObject().getInt("place_id", 0)));
 	}
+	
 	System.out.println();
-	System.out.format("%-4s%-48s%-18s%n", "#", "City", "Country");
+	System.out.format("%-4s%-48s%-18s%-18s%n", "#", "City", "Country", "Place ID");
 	System.out.println("-------------------------------------------------------------------------------------");
 
 	for (int i = 0; i < cityNames.size(); i++){
 	    String entryNum = i + 1 + ".";
 	    String entryCity = cityNames.get(i);
 	    String entryCountry = countryNames.get(i);
-	    System.out.format("%-4s%-48s%-18s%n", entryNum, entryCity, entryCountry);
+	    String entryID = placeIDs.get(i); 
+	    System.out.format("%-4s%-48s%-18s%-18s%n", entryNum, entryCity, entryCountry, entryID);
 	}
 
 	System.out.println("-------------------------------------------------------------------------------------");
