@@ -1,4 +1,6 @@
-public class HotelEntry {
+import java.io.Serializable;
+
+public class HotelEntry implements Serializable{
 
     private String name;
     private String hotel_id;
