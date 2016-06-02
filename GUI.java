@@ -2,25 +2,31 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class GUI {
-    private static void createAndShowGUI() {
-        JFrame frame = new JFrame("terminalVelocity");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	frame.setSize(400,400);
-	frame.setLayout(new GridLayout(3, 1));
+public class GUI extends JFrame {
+    String name;
+    JFrame frame;
+    Container cPane;
+    
+    public GUI() {
+	name = " ";
+	createGUI();
+    }
+    
+    public void createGUI(){
+	frame = new JFrame("terminalVelocity");
+	cPane = frame.getContentPane();
+	cPane = setLayout(new GridBagLayout());
 
-        JLabel label = new JLabel("Hello World");
-        frame.getContentPane().add(label);
+	arrangeComponents();
+	frame.setSize(500,500);
+	frame.setResizable(false);
+	frame.setVisible(true);
+    }
 
-        //frame.pack();
-        frame.setVisible(true);
+    public void arrangeComponents(){	
     }
 
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-		public void run() {
-		    createAndShowGUI();
-		}
-	    });
+	new GUI();
     }
 }
