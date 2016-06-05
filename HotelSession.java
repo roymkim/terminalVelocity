@@ -1,3 +1,7 @@
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 public class HotelSession implements Serializable{
@@ -10,7 +14,7 @@ public class HotelSession implements Serializable{
 	entries = new HotelEntry[100];
 	numHotels = 0;
 	this.sessionURL = sessionURL;
-    }
+    } 
 
     public boolean addEntry(HotelEntry entry) {
 	if (numHotels >= entries.length) {
@@ -20,7 +24,7 @@ public class HotelSession implements Serializable{
 	numHotels++;
 	return true;
     }
-    
+
     private boolean checkSessionIsValid() {
 	return false;
     }
@@ -35,6 +39,29 @@ public class HotelSession implements Serializable{
 
     public String getSessionURL() {
 	return sessionURL;
+    }
+
+    public void writeSession() {
+	try {
+	    FileOutputStream fos = new FileOutputStream("hotelSessionData.txt");
+	    ObjectOutputStream oos = new ObjectOutputStream(fos);
+	    oos.writeObject(this);
+	    oos.close();
+	} catch (Exception e) {
+	    System.out.println(e);
+	}
+    }
+
+    public HotelSession readSession() {
+	HotelSession s = null;
+	try {
+	    FileInputStream fis = new FileInputStream("hotelSessionData.txt");
+	    ObjectInputStream ois = new ObjectInputStream(fis);
+	    s = (HotelSession) ois.readObject();
+	} catch (Exception e) {
+	    System.out.println(e);
+	}
+	return s;
     }
 
 }
