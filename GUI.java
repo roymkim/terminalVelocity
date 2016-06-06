@@ -1,26 +1,15 @@
-import javax.swing.*;        
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
-public class GUI {
-    private static void createAndShowGUI() {
-        JFrame frame = new JFrame("terminalVelocity");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	frame.setSize(400,400);
-	frame.setLayout(new GridLayout(3, 1));
-
-        JLabel label = new JLabel("Hello World");
-        frame.getContentPane().add(label);
-
-        //frame.pack();
-        frame.setVisible(true);
-    }
-
+public class GUI {   
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-		public void run() {
-		    createAndShowGUI();
+	SwingUtilities.invokeLater(new Runnable(){
+		public void run(){
+		    JFrame frame = new MainFrame("terminalVelocity");
+		    frame.setSize(500, 400);
+		    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		    frame.setVisible(true);
 		}
 	    });
-    }
+    }  
 }
