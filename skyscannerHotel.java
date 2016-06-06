@@ -18,7 +18,8 @@ public class skyscannerHotel{
     private int rooms;
 
     private HotelSession sessionObj;
-    
+    private String sessionURL;
+
     public skyscannerHotel(String apiKey, String market, String currency, String locale, String entityid, String checkindate, String checkoutdate, int guests, int rooms){
 	this.apiKey = apiKey;
 	this.market = market;
@@ -58,8 +59,9 @@ public class skyscannerHotel{
 	    }
 	    rd.close();
 
-	    sessionObj = new HotelSession(URL);
-
+	    sessionURL = con.getHeaderField("Location");
+	    sessionObj = new HotelSession(parseSessionID(sessionURL));
+	    
 	    System.out.println("Results found for location: " + entityid + " for dates: " + checkindate + " - " + checkoutdate);
 	    System.out.println();
 	}
@@ -69,7 +71,7 @@ public class skyscannerHotel{
     public String pollSession() throws Exception{
 	
 	String params = buildParameters();
-	URL urlObj = new URL(URL + params);
+	URL urlObj = new URL("http://partners.api.skyscanner.net" + sessionURL);
 	
 	HttpURLConnection con = (HttpURLConnection) urlObj.openConnection();
 	con.setRequestMethod("GET");
@@ -87,12 +89,7 @@ public class skyscannerHotel{
     }
 
     public HotelSession parseResult(String result) {
-	String[] hotelNames = new String[10];
-	String[] hotelStars = new String[10];
-	String[] hotelPrices = new String[10];
-	String[] hotelIDs = new String[10];
-	String[] agentIDs = new String[10];
-
+	
 	JsonObject resultObj = Json.parse(result).asObject();
 
 	JsonArray hotels_prices = resultObj.get("hotels_prices").asArray();
@@ -101,8 +98,14 @@ public class skyscannerHotel{
 	
 	int entry = 0;
 	for(JsonValue hotel: hotels) {
+	    String entryName;
+	    String entryStars;
+	    String entryPrice;
+	    String entryHotelID;
+	    String entryAgentID;
+	    
 	    //Hotel Name
-	    hotelNames[entry] = hotel.asObject().getString("name", "idk");
+	    entryName = hotel.asObject().getString("name", "idk");
 
 	    //Hotel Stars
 	    int stars = hotel.asObject().getInt("star_rating", 1);
@@ -110,46 +113,28 @@ public class skyscannerHotel{
 	    for (int i = 0; i < stars; i++) {
 		stringOfStars += "*";
 	    }
-	    hotelStars[entry] = stringOfStars;
+	    entryStars = stringOfStars;
 	    
 	    //Hotel Price
 	    JsonObject hotel_price = hotels_prices.get(entry).asObject();
-	    hotelIDs[entry] = Integer.toString(hotel_price.getInt("id", 0));
+	    entryHotelID = Integer.toString(hotel_price.getInt("id", 0));
 	    
 	    JsonArray agent_prices = hotel_price.get("agent_prices").asArray();
-	    agentIDs[entry] = Integer.toString(agent_prices.get(0).asObject().getInt("id", 0));
-	    hotelPrices[entry] = Integer.toString(agent_prices.get(0).asObject().getInt("price_total", 0));
-
+	    entryAgentID = Integer.toString(agent_prices.get(0).asObject().getInt("id", 0));
+	    entryPrice = Integer.toString(agent_prices.get(0).asObject().getInt("price_total", 0));
+	 
+	    HotelEntry hotelEntry = new HotelEntry(entryName, entryHotelID, entryAgentID, entryStars, entryPrice);
+	    sessionObj.addEntry(hotelEntry);
+	
 	    entry++;
 	}
-	/*
-	System.out.format("%-4s%-48s%-18s%-18s%n", "#", "Hotel Name", "Star Rating", "Price");
-	System.out.println("----------------------------------------------------------------------------");
-	*/
-	for (int i = 0; i < hotelNames.length; i++) {
-	    String entryNum = i + ".";
-	    String entryName = hotelNames[i];
-	    String entryStars = hotelStars[i];
-	    String entryPrice = "$" + hotelPrices[i];
-	    HotelEntry e = new HotelEntry(hotelNames[i], hotelIDs[i], agentIDs[i], hotelStars[i], hotelPrices[i]);
-	    sessionObj.addEntry(e);
 
-	    //System.out.format("%-4s%-48s%-18s%-18s%n", entryNum, entryName, entryStars, entryPrice);
-	}
-	/*
-	System.out.println("----------------------------------------------------------------------------");
-	System.out.println();
-	*/
-
-	return sessionObj;
 	
-    }
-    public static void main(String[]args){
-	if (args.length >= 3) {
-	    skyscannerHotel h = new skyscannerHotel("prtl6749387986743898559646983194", args[0], args[1], args[2], 2, 1);
-	} else {
-	skyscannerHotel h = new skyscannerHotel("prtl6749387986743898559646983194", "27544008", "2016-07-23", "2016-07-25", 2, 1);
-	}
+	return sessionObj;
     }
 
+    private String parseSessionID(String URL) {
+	return URL.substring(34,174);
+    }
+    
 }

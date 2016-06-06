@@ -3,13 +3,30 @@ import java.io.ObjectOutputStream;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.Scanner;
 
 public class terminalVelocity {
-    
-    private static final String apiKey = "prtl6749387986743898559646983194";
 
-    private static void hotel(String args[]) {
-	skyscannerHotel h = new skyscannerHotel(apiKey, args[0], args[1], args[2], 2, 1);
+    private static final String apiKey = "prtl6749387986743898559646983194";
+    
+    private String entityID;
+    private String checkInDate;
+    private String checkOutDate;
+    private int guests;
+    private int rooms;
+
+    public terminalVelocity() {
+	
+    }
+
+    public static void main(String args[]) {
+	terminalVelocity tv = new terminalVelocity();
+	tv.takeSearchDetails();
+	tv.runHotelSearch();
+    }
+
+    private void runHotelSearch() {
+	skyscannerHotel h = new skyscannerHotel(apiKey, entityID, checkInDate, checkOutDate, guests, rooms);
 	try {
 	    h.createSession();
 	    String pollSessionResult = h.pollSession();
@@ -17,13 +34,12 @@ public class terminalVelocity {
 	    printHotelResults(sessionObj);
 	    
 	    sessionObj.writeSession();
-
 	   
 	} catch (Exception e) { 
 	    System.out.println(e);
 	}
     }
-
+    
     private static void printHotelResults(HotelSession sessionObj) {
 	HotelEntry[] hotelEntries = sessionObj.getEntries();
 	
@@ -37,12 +53,28 @@ public class terminalVelocity {
 
     }
 
-    public static void main(String args[]) {
-	if (args.length == 0) {
-	    System.out.println("Invalid Input");
-	    return;
-	}
-	hotel(args);
+    private void takeSearchDetails() {
+	Scanner scanner = new Scanner(System.in);
+
+	//Destination name
+	System.out.println("Destination name:");
+	entityID = scanner.nextLine();
+	
+	//Arrival date
+	System.out.println("Arrival date (YYYY-MM-DD):");
+	checkInDate = scanner.nextLine();
+
+	//Departure date
+	System.out.println("Departure date (YYYY-MM-DD):");
+	checkOutDate = scanner.nextLine();
+
+	//Number of Guests
+	System.out.println("Number of guests:");
+	guests = Integer.parseInt(scanner.nextLine());
+	
+	//Number of Rooms
+	System.out.println("Number of rooms:");
+	rooms = Integer.parseInt(scanner.nextLine());
     }
-    
+
 }

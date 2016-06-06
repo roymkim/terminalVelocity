@@ -14,6 +14,7 @@ public class HotelEntry implements Serializable{
 	this.hotel_id = hotel_id;
 	this.agent_id = agent_id;
 	this.stars = stars;
+	this.price = price;
     }
 
     public String getName() {
@@ -41,3 +42,4 @@ public class HotelEntry implements Serializable{
     }
 
 }
+ 

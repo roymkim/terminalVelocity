@@ -6,14 +6,16 @@ import java.io.Serializable;
 
 public class HotelSession implements Serializable{
 
+    private static final String URL = "http://partners.api.skyscanner.net";
+
     private HotelEntry[] entries;
     private int numHotels;
-    private String sessionURL;
+    private String sessionID;
     
-    public HotelSession(String sessionURL) {
+    public HotelSession(String sesssionID) {
 	entries = new HotelEntry[100];
 	numHotels = 0;
-	this.sessionURL = sessionURL;
+	this.sessionID = sessionID;
     } 
 
     public boolean addEntry(HotelEntry entry) {
@@ -37,8 +39,8 @@ public class HotelSession implements Serializable{
 	return numHotels;
     }
 
-    public String getSessionURL() {
-	return sessionURL;
+    public String getSessionID() {
+	return sessionID;
     }
 
     public void writeSession() {
@@ -47,6 +49,7 @@ public class HotelSession implements Serializable{
 	    ObjectOutputStream oos = new ObjectOutputStream(fos);
 	    oos.writeObject(this);
 	    oos.close();
+	    fos.close();
 	} catch (Exception e) {
 	    System.out.println(e);
 	}
@@ -58,6 +61,8 @@ public class HotelSession implements Serializable{
 	    FileInputStream fis = new FileInputStream("hotelSessionData.txt");
 	    ObjectInputStream ois = new ObjectInputStream(fis);
 	    s = (HotelSession) ois.readObject();
+	    ois.close();
+	    fis.close();
 	} catch (Exception e) {
 	    System.out.println(e);
 	}
