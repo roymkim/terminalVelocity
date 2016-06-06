@@ -20,7 +20,7 @@ public class MainFrame extends JFrame {
 	detailsPanel.addDetailListener(new DetailListener() {
 	    public void detailEventOccurred(DetailEvent event){
 		String text = event.getText();
-		    
+		
 		textArea.append(text);
 	    }
 	});
