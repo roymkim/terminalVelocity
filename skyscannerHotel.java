@@ -19,6 +19,7 @@ public class skyscannerHotel{
 
     private HotelSession sessionObj;
     private String sessionURL;
+    private String sessionID;
 
     public skyscannerHotel(String apiKey, String market, String currency, String locale, String entityid, String checkindate, String checkoutdate, int guests, int rooms){
 	this.apiKey = apiKey;
@@ -60,7 +61,8 @@ public class skyscannerHotel{
 	    rd.close();
 
 	    sessionURL = con.getHeaderField("Location");
-	    sessionObj = new HotelSession(parseSessionID(sessionURL));
+	    sessionID = parseSessionID(sessionURL);
+	    sessionObj = new HotelSession(apiKey, sessionID);
 	    
 	    System.out.println("Results found for location: " + entityid + " for dates: " + checkindate + " - " + checkoutdate);
 	    System.out.println();
@@ -70,7 +72,7 @@ public class skyscannerHotel{
     
     public String pollSession() throws Exception{
 	
-	String params = buildParameters();
+	String params = buildParameters();	
 	URL urlObj = new URL("http://partners.api.skyscanner.net" + sessionURL);
 	
 	HttpURLConnection con = (HttpURLConnection) urlObj.openConnection();
@@ -128,13 +130,20 @@ public class skyscannerHotel{
 	
 	    entry++;
 	}
-
 	
 	return sessionObj;
     }
 
     private String parseSessionID(String URL) {
-	return URL.substring(34,174);
+	int end = 0;
+	char[] chars = URL.toCharArray();
+	for (char c : chars) {
+	    if (c == '?') {
+		break;
+	    }
+	    end++;
+	}
+	return URL.substring(34,end);
     }
-    
+
 }

@@ -80,8 +80,7 @@ public class skyscannerAutoSuggest{
 	entityIDs = new ArrayList<String>();
 
 	JsonObject resultObj = Json.parse(result).asObject();
-	System.out.println(resultObj);
-	
+		
 	JsonArray places = resultObj.get("places").asArray();
 	JsonArray results = resultObj.get("results").asArray();
 
