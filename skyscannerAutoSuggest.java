@@ -11,8 +11,8 @@ public class skyscannerAutoSuggest{
     private String apiKey;
 
     private static final String USER_AGENT = "Mozilla/5.0";
-    private String url = "http://partners.api.skyscanner.net/apiservices/hotels/autosuggest/v2";
-    
+    private String url = "http://partners.api.skyscanner.net/apiservices/hotels/autosuggest/v2";    
+
     public skyscannerAutoSuggest(String market, String currency, String locale, String query, String apiKey){
 	this.market = market;
 	this.currency = currency;
@@ -29,7 +29,7 @@ public class skyscannerAutoSuggest{
     }
 
     public skyscannerAutoSuggest(String query, String apiKey){
-	this("UK", "EUR", "en-GB", query, apiKey);
+	this("US", "USD", "en-US", query, apiKey);
     }
     
     public String buildParameters(){
@@ -80,8 +80,6 @@ public class skyscannerAutoSuggest{
 
 	JsonObject resultObj = Json.parse(result).asObject();
 
-	System.out.println(resultObj.toString());
-
 	System.out.println();
 	JsonArray places = resultObj.get("places").asArray();
 	JsonArray results = resultObj.get("results").asArray();
@@ -100,7 +98,8 @@ public class skyscannerAutoSuggest{
 
 	System.out.println();
 	System.out.format("%-4s%-30s%-18s%-18s%n", "#", "City", "Country", "Place ID");
-	System.out.println("-------------------------------------------------------------------------------------");
+	System.out.println("----------------------------------------------------------------------------");
+	
 
 	for (int i = 0; i < cityNames.size(); i++){
 	    String entryNum = i + 1 + ".";
@@ -109,12 +108,14 @@ public class skyscannerAutoSuggest{
 	    String entryID = placeIDs.get(i); 
 	    System.out.format("%-4s%-30s%-18s%-18s%n", entryNum, entryCity, entryCountry, entryID);
 	}
-
-	System.out.println("-------------------------------------------------------------------------------------");
+	
+	System.out.println("----------------------------------------------------------------------------");
+	
 	System.out.println();
 
 	System.out.format("%-4s%-25s%-20s%-18s%-18s%n", "#", "Location", "City", "EntityID", "Place ID");
-        System.out.println("-------------------------------------------------------------------------------------");
+	System.out.println("----------------------------------------------------------------------------");
+        
 
         for (int i = 0; i < displayNames.size(); i++){
             String entryNum = i + 1 + ".";
@@ -129,8 +130,7 @@ public class skyscannerAutoSuggest{
 	    }
             System.out.format("%-4s%-25s%-20s%-18s%-18s%n", entryNum, entryLocation, entryRegion, entryEntityID, entryID);
         }
-
-        System.out.println("-------------------------------------------------------------------------------------");
+	System.out.println("----------------------------------------------------------------------------");
         System.out.println();
 
     }

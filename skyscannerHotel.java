@@ -33,7 +33,7 @@ public class skyscannerHotel{
     }
     
     public skyscannerHotel(String apiKey, String entityid, String checkindate, String checkoutdate, int guests, int rooms){
-	this(apiKey, "UK", "EUR", "en-GB", entityid, checkindate, checkoutdate, guests, rooms);
+	this(apiKey, "US", "USD", "en-US", entityid, checkindate, checkoutdate, guests, rooms);
     }
     
     public String buildParameters() {
