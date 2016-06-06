@@ -4,6 +4,7 @@ import java.awt.event.*;
 import javax.swing.event.*;
 import java.util.*;
 import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 
 public class DetailsPanel extends JPanel{
     private static final long serialVersionUID = 6915622549267792262L;
@@ -26,7 +27,7 @@ public class DetailsPanel extends JPanel{
 	Date checkInDate = checkInCal.getTime();
 	SpinnerDateModel checkInModel = new SpinnerDateModel();
 	checkInModel.setValue(checkInDate);
-	JSpinner checkInSpinner = new JSpinner(checkInModel);
+	final JSpinner checkInSpinner = new JSpinner(checkInModel);
 
 	checkInSpinner.addChangeListener(new ChangeListener() {
 		public void stateChanged(ChangeEvent e){
@@ -41,7 +42,7 @@ public class DetailsPanel extends JPanel{
 	Date checkOutDate = checkOutCal.getTime();
 	SpinnerDateModel checkOutModel = new SpinnerDateModel();
 	checkOutModel.setValue(checkOutDate);
-	JSpinner checkOutSpinner = new JSpinner(checkOutModel);
+	final JSpinner checkOutSpinner = new JSpinner(checkOutModel);
 	
 	checkOutSpinner.addChangeListener(new ChangeListener() {
 		public void stateChanged(ChangeEvent e){
@@ -52,10 +53,10 @@ public class DetailsPanel extends JPanel{
 	checkOutFormat.applyPattern("yyyy-MM-dd");
 
 	Integer[] numberOfGuests = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	JComboBox<Integer> guests = new JComboBox<Integer>(numberOfGuests);
+	final JComboBox<Integer> guests = new JComboBox<Integer>(numberOfGuests);
 
 	Integer[] numberOfRooms = {1, 2, 3, 4, 5};
-	JComboBox<Integer> rooms = new JComboBox<Integer>(numberOfRooms);
+	final JComboBox<Integer> rooms = new JComboBox<Integer>(numberOfRooms);
 
 	guests.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e){
@@ -63,15 +64,43 @@ public class DetailsPanel extends JPanel{
 		}
 	    });
 	
-	final JTextField nameField = new JTextField(10);
+	final JTextField queryField = new JTextField(10);
     
-	JButton addBtn = new JButton("Search");
+	JButton search = new JButton("Search");
 
-	addBtn.addActionListener(new ActionListener() {
+	search.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e){
-		    String name = nameField.getText();
+		    //terminalVelocity terminalVelocity = new terminalVelocity();
+
+		    boolean validQuery = false;
+		    boolean validCID = false;
+		    boolean validCOD = false;
+
+		    String query = queryField.getText();
+		    String text = "";
+
+		    if (query.length() < 2){
+			text = "Query must be at least two characters \n";
+		    } else {
+			text += query + "\n";
+			validQuery = true;
+		    } 
+
+		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		    
-		    String text = name + "\n";
+		    String CID = sdf.format(checkInSpinner.getValue());
+		    String COD = sdf.format(checkOutSpinner.getValue());
+		    if (isNotImpossibleDateCombination(CID, COD)){
+			validCID = true;
+			validCOD = true;
+			text += sdf.format(checkInSpinner.getValue()) + "\n";
+			text += sdf.format(checkOutSpinner.getValue()) + "\n";
+		    } else {
+			text += "Impossible Date Combination \n";
+		    }
+
+		    text += guests.getSelectedItem() + "\n";
+		    text += guests.getSelectedItem() + "\n";
 		    
 		    fireDetailEvent(new DetailEvent(this, text));
 		}
@@ -110,7 +139,7 @@ public class DetailsPanel extends JPanel{
 	
 	gc.gridx = 1;
 	gc.gridy = 0;
-	add(nameField, gc);
+	add(queryField, gc);
 
 	gc.gridx = 1;
 	gc.gridy = 1;
@@ -134,7 +163,7 @@ public class DetailsPanel extends JPanel{
 	gc.anchor = GridBagConstraints.FIRST_LINE_START;
 	gc.gridx = 1;
 	gc.gridy = 5;
-	add(addBtn, gc);
+	add(search, gc);
 	
     }
     
@@ -154,6 +183,34 @@ public class DetailsPanel extends JPanel{
 
     public void removeDetailListener(DetailListener listener){
 	listenerList.remove(DetailListener.class, listener);
+    }
+
+    public boolean isNotImpossibleDateCombination(String date1, String date2){
+	Calendar cal = Calendar.getInstance();
+	Date date = cal.getTime();
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	String CD = sdf.format(date);
+
+	if (Integer.parseInt(date2.substring(0, 4)) < Integer.parseInt(CD.substring(0, 4)) || Integer.parseInt(date1.substring(0, 4)) < Integer.parseInt(CD.substring(0, 4))) {
+	    return false;
+	}
+	if (Integer.parseInt(date2.substring(5, 7)) < Integer.parseInt(CD.substring(5, 7)) || Integer.parseInt(date1.substring(5, 7)) < Integer.parseInt(CD.substring(5, 7))){
+	    return false;
+	}
+	if (Integer.parseInt(date2.substring(8, 10)) < Integer.parseInt(CD.substring(8, 10)) || Integer.parseInt(date1.substring(8, 10)) < Integer.parseInt(CD.substring(8, 10))){
+	    return false;
+	}
+	if (Integer.parseInt(date2.substring(0, 4)) < Integer.parseInt(date1.substring(0, 4))){
+	    System.out.println(CD);
+	    return false;
+	}
+	if (Integer.parseInt(date2.substring(5, 7)) < Integer.parseInt(date1.substring(5, 7))){
+	    return false;
+	}
+	if (Integer.parseInt(date2.substring(8, 10)) <= Integer.parseInt(date1.substring(8, 10))){
+	    return false;
+	}
+	return true;
     }
 }
 
