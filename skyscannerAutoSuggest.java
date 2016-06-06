@@ -13,6 +13,8 @@ public class skyscannerAutoSuggest{
     private static final String USER_AGENT = "Mozilla/5.0";
     private String url = "http://partners.api.skyscanner.net/apiservices/hotels/autosuggest/v2";    
 
+    private ArrayList<String> entityIDs;
+
     public skyscannerAutoSuggest(String market, String currency, String locale, String query, String apiKey){
 	this.market = market;
 	this.currency = currency;
@@ -47,8 +49,7 @@ public class skyscannerAutoSuggest{
 
 	int responseCode = con.getResponseCode();
 	if (responseCode == 200){
-	    System.out.println("Results found");
-	    System.out.println();
+	    
 	}
     }
 
@@ -66,26 +67,27 @@ public class skyscannerAutoSuggest{
 	    result.append(line);
 	}
 	rd.close();
-	//System.out.println(result);
 	return result.toString();
     }
 
     public void parseResult(String result){
 	ArrayList<String> cityNames = new ArrayList<String>();
+	ArrayList<String> adminNames = new ArrayList<String>();
 	ArrayList<String> countryNames = new ArrayList<String>();
 	ArrayList<String> placeIDs = new ArrayList<String>();
 	ArrayList<String> displayNames = new ArrayList<String>();
 	ArrayList<String> parentPlaceIDs = new ArrayList<String>();
-	ArrayList<String> entityIDs = new ArrayList<String>();
+	entityIDs = new ArrayList<String>();
 
 	JsonObject resultObj = Json.parse(result).asObject();
-
-	System.out.println();
+	System.out.println(resultObj);
+	
 	JsonArray places = resultObj.get("places").asArray();
 	JsonArray results = resultObj.get("results").asArray();
 
 	for (JsonValue place : places){
 	    cityNames.add(place.asObject().getString("city_name", "N/A"));
+	    adminNames.add(place.asObject().getString("admin_level1", "N/A"));
 	    countryNames.add(place.asObject().getString("country_name", "N/A"));
 	    placeIDs.add(Integer.toString(place.asObject().getInt("place_id", 0)));
 	}
@@ -96,47 +98,26 @@ public class skyscannerAutoSuggest{
 	    entityIDs.add(res.asObject().getString("individual_id", "N/A"));
 	}
 
+       
 	System.out.println();
-	System.out.format("%-4s%-30s%-18s%-18s%n", "#", "City", "Country", "Place ID");
-	System.out.println("----------------------------------------------------------------------------");
+	System.out.format("%-4s%-20s%-32s%-20s%n", "#", "City", "State, Province, District", "Country");
+	System.out.println("--------------------------------------------------------------------");
 	
 
 	for (int i = 0; i < cityNames.size(); i++){
 	    String entryNum = i + 1 + ".";
 	    String entryCity = cityNames.get(i);
+	    String entryAdmin = adminNames.get(i);
 	    String entryCountry = countryNames.get(i);
-	    String entryID = placeIDs.get(i); 
-	    System.out.format("%-4s%-30s%-18s%-18s%n", entryNum, entryCity, entryCountry, entryID);
+	    System.out.format("%-4s%-20s%-32s%-20s%n", entryNum, entryCity, entryAdmin, entryCountry);
 	}
 	
-	System.out.println("----------------------------------------------------------------------------");
-	
-	System.out.println();
-
-	System.out.format("%-4s%-25s%-20s%-18s%-18s%n", "#", "Location", "City", "EntityID", "Place ID");
-	System.out.println("----------------------------------------------------------------------------");
-        
-
-        for (int i = 0; i < displayNames.size(); i++){
-            String entryNum = i + 1 + ".";
-            String entryLocation = displayNames.get(i);
-            String entryEntityID = entityIDs.get(i);
-            String entryID = parentPlaceIDs.get(i);
-	    String entryRegion = "N/A";
-	    for (int j = 0; j < placeIDs.size(); j++){
-		if (entryID.equals(placeIDs.get(j))){
-		    entryRegion = cityNames.get(j);
-		}
-	    }
-            System.out.format("%-4s%-25s%-20s%-18s%-18s%n", entryNum, entryLocation, entryRegion, entryEntityID, entryID);
-        }
-	System.out.println("----------------------------------------------------------------------------");
-        System.out.println();
+	System.out.println("--------------------------------------------------------------------");
 
     }
 
-
-    public static void main(String[]args){
-	skyscannerAutoSuggest t = new skyscannerAutoSuggest("bu", "prtl6749387986743898559646983194");
+    public String getEntityID(int index) {
+	return entityIDs.get(index);
     }
+
 }
