@@ -19,6 +19,8 @@ public class DetailsPanel extends JPanel{
 	JLabel queryLabel = new JLabel("Enter Destination or Hotel Name: ");
 	JLabel checkInLabel = new JLabel("Enter Check-In Date: ");
 	JLabel checkOutLabel = new JLabel("Enter Check-Out Date: ");
+	JLabel guestsLabel = new JLabel("Guests: ");
+	JLabel roomsLabel = new JLabel("Rooms: ");
 	
 	Calendar checkInCal = Calendar.getInstance();
 	Date checkInDate = checkInCal.getTime();
@@ -49,10 +51,18 @@ public class DetailsPanel extends JPanel{
 	SimpleDateFormat checkOutFormat = ((JSpinner.DateEditor) checkOutSpinner.getEditor()).getFormat();
 	checkOutFormat.applyPattern("yyyy-MM-dd");
 
-	//	int[] guests = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	//JComboBox guestList = new JComboBox(guests);
-	//guestList.addActionListener(this);
+	Integer[] numberOfGuests = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	JComboBox<Integer> guests = new JComboBox<Integer>(numberOfGuests);
 
+	Integer[] numberOfRooms = {1, 2, 3, 4, 5};
+	JComboBox<Integer> rooms = new JComboBox<Integer>(numberOfRooms);
+
+	guests.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e){
+		    JComboBox combo = (JComboBox)e.getSource();
+		}
+	    });
+	
 	final JTextField nameField = new JTextField(10);
     
 	JButton addBtn = new JButton("Search");
@@ -87,6 +97,14 @@ public class DetailsPanel extends JPanel{
 	gc.gridy = 2;
 	add(checkOutLabel, gc);
 
+	gc.gridx = 0;
+	gc.gridy = 3;
+	add(guestsLabel, gc);
+
+	gc.gridx = 0;
+	gc.gridy = 4;
+	add(roomsLabel, gc);
+
 	//2nd
 	gc.anchor = GridBagConstraints.LINE_START;
 	
@@ -98,18 +116,25 @@ public class DetailsPanel extends JPanel{
 	gc.gridy = 1;
 	add(checkInSpinner, gc);
 
-
 	gc.gridx = 1;
 	gc.gridy = 2;
 	add(checkOutSpinner, gc);
+
+	gc.gridx = 1;
+	gc.gridy = 3;
+	add(guests, gc);
+
+	gc.gridx = 1;
+	gc.gridy = 4;
+	add(rooms, gc);
+
 	//Final Row
 	gc.weighty = 10;
 
 	gc.anchor = GridBagConstraints.FIRST_LINE_START;
 	gc.gridx = 1;
-	gc.gridy = 3;
+	gc.gridy = 5;
 	add(addBtn, gc);
-
 	
     }
     

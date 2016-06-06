@@ -10,7 +10,7 @@ public class MainFrame extends JFrame {
 
 	setLayout(new BorderLayout());
 
-	final JTextArea textArea = new JTextArea(10,10);	
+	final JTextArea textArea = new JTextArea(15,10);	
 	textArea.setEditable(false);
 
 	JScrollPane scrollPane = new JScrollPane(textArea);
