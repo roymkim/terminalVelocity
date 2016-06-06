@@ -10,8 +10,10 @@ public class MainFrame extends JFrame {
 
 	setLayout(new BorderLayout());
 
-	final JTextArea textArea = new JTextArea();
-	JButton button = new JButton("Click Me!");
+	final JTextArea textArea = new JTextArea(10,10);	
+	textArea.setEditable(false);
+
+	JScrollPane scrollPane = new JScrollPane(textArea);
 
 	detailsPanel = new DetailsPanel();
 
@@ -25,15 +27,8 @@ public class MainFrame extends JFrame {
 	
 	Container c = getContentPane();
 
-	c.add(textArea, BorderLayout.CENTER);
-	c.add(button, BorderLayout.SOUTH);
-	c.add(detailsPanel, BorderLayout.WEST);
+	c.add(scrollPane, BorderLayout.SOUTH);
+	c.add(detailsPanel, BorderLayout.NORTH);
 
-	button.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e){
-		textArea.append("Hello\n");
-	    }
-	});
     }
 }
