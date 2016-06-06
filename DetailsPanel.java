@@ -11,13 +11,12 @@ public class DetailsPanel extends JPanel{
 
     public DetailsPanel(){
 	Dimension size = getPreferredSize();
-	size.width = 250;
+	size.height = 200;
 	setPreferredSize(size);
     
 	setBorder(BorderFactory.createTitledBorder("Search Details"));
 
 	JLabel nameLabel = new JLabel("Name: ");
-	JLabel occupationLabel = new JLabel("Occupation: ");
 	
 	Calendar cal = Calendar.getInstance();
 	Date date = cal.getTime();
@@ -34,16 +33,14 @@ public class DetailsPanel extends JPanel{
 	format.applyPattern("yyyy-MM-dd");
 
 	final JTextField nameField = new JTextField(10);
-	final JTextField occupationField = new JTextField(10);
     
 	JButton addBtn = new JButton("Add");
 
 	addBtn.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent e){
 	        String name = nameField.getText();
-		String occupation = occupationField.getText();
 		
-		String text = name + ": " + occupation + "\n";
+		String text = name + "\n";
 
 		fireDetailEvent(new DetailEvent(this, text));
 	    }
@@ -63,8 +60,7 @@ public class DetailsPanel extends JPanel{
 
 	gc.gridx = 0;
 	gc.gridy = 1;
-	add(occupationLabel, gc);
-    
+
 	//2nd
 	gc.anchor = GridBagConstraints.LINE_START;
 	
@@ -74,7 +70,6 @@ public class DetailsPanel extends JPanel{
 
 	gc.gridx = 1;
 	gc.gridy = 1;
-	add(occupationField, gc);
 
 
 	gc.gridx = 1;
