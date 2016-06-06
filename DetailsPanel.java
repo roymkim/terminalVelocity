@@ -14,37 +14,58 @@ public class DetailsPanel extends JPanel{
 	size.height = 200;
 	setPreferredSize(size);
     
-	setBorder(BorderFactory.createTitledBorder("Search Details"));
+	setBorder(BorderFactory.createTitledBorder("Hotels Search"));
 
-	JLabel nameLabel = new JLabel("Name: ");
+	JLabel queryLabel = new JLabel("Enter Destination or Hotel Name: ");
+	JLabel checkInLabel = new JLabel("Enter Check-In Date: ");
+	JLabel checkOutLabel = new JLabel("Enter Check-Out Date: ");
 	
-	Calendar cal = Calendar.getInstance();
-	Date date = cal.getTime();
-	SpinnerDateModel model = new SpinnerDateModel();
-	model.setValue(date);
-	JSpinner spinner = new JSpinner(model);
-	spinner.addChangeListener(new ChangeListener() {
-	    @Override
+	Calendar checkInCal = Calendar.getInstance();
+	Date checkInDate = checkInCal.getTime();
+	SpinnerDateModel checkInModel = new SpinnerDateModel();
+	checkInModel.setValue(checkInDate);
+	JSpinner checkInSpinner = new JSpinner(checkInModel);
+
+	checkInSpinner.addChangeListener(new ChangeListener() {
 		public void stateChanged(ChangeEvent e){
-		Date date = (Date) ((JSpinner) e.getSource()).getValue();
-	    }
+		    Date date = (Date) ((JSpinner) e.getSource()).getValue();
+		}
 	    });
-	SimpleDateFormat format = ((JSpinner.DateEditor) spinner.getEditor()).getFormat();
-	format.applyPattern("yyyy-MM-dd");
+	SimpleDateFormat checkInFormat = ((JSpinner.DateEditor) checkInSpinner.getEditor()).getFormat();
+	checkInFormat.applyPattern("yyyy-MM-dd");
+
+	Calendar checkOutCal = Calendar.getInstance();
+	checkOutCal.add(Calendar.DATE, 1);
+	Date checkOutDate = checkOutCal.getTime();
+	SpinnerDateModel checkOutModel = new SpinnerDateModel();
+	checkOutModel.setValue(checkOutDate);
+	JSpinner checkOutSpinner = new JSpinner(checkOutModel);
+	
+	checkOutSpinner.addChangeListener(new ChangeListener() {
+		public void stateChanged(ChangeEvent e){
+		    Date date = (Date) ((JSpinner) e.getSource()).getValue();
+		}
+	    });
+	SimpleDateFormat checkOutFormat = ((JSpinner.DateEditor) checkOutSpinner.getEditor()).getFormat();
+	checkOutFormat.applyPattern("yyyy-MM-dd");
+
+	//	int[] guests = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	//JComboBox guestList = new JComboBox(guests);
+	//guestList.addActionListener(this);
 
 	final JTextField nameField = new JTextField(10);
     
-	JButton addBtn = new JButton("Add");
+	JButton addBtn = new JButton("Search");
 
 	addBtn.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e){
-	        String name = nameField.getText();
-		
-		String text = name + "\n";
-
-		fireDetailEvent(new DetailEvent(this, text));
-	    }
-	});
+		public void actionPerformed(ActionEvent e){
+		    String name = nameField.getText();
+		    
+		    String text = name + "\n";
+		    
+		    fireDetailEvent(new DetailEvent(this, text));
+		}
+	    });
 
 	setLayout(new GridBagLayout());
 
@@ -56,10 +77,15 @@ public class DetailsPanel extends JPanel{
 
 	gc.gridx = 0;
 	gc.gridy = 0;
-	add(nameLabel, gc);
+	add(queryLabel, gc);
 
 	gc.gridx = 0;
 	gc.gridy = 1;
+	add(checkInLabel, gc);
+
+	gc.gridx = 0;
+	gc.gridy = 2;
+	add(checkOutLabel, gc);
 
 	//2nd
 	gc.anchor = GridBagConstraints.LINE_START;
@@ -70,11 +96,12 @@ public class DetailsPanel extends JPanel{
 
 	gc.gridx = 1;
 	gc.gridy = 1;
+	add(checkInSpinner, gc);
 
 
 	gc.gridx = 1;
 	gc.gridy = 2;
-	add(spinner, gc);
+	add(checkOutSpinner, gc);
 	//Final Row
 	gc.weighty = 10;
 
@@ -82,6 +109,8 @@ public class DetailsPanel extends JPanel{
 	gc.gridx = 1;
 	gc.gridy = 3;
 	add(addBtn, gc);
+
+	
     }
     
     public void fireDetailEvent(DetailEvent event){
