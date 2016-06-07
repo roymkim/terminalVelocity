@@ -38,8 +38,12 @@ public class skyscannerHotel{
     }
     
     public String buildParameters() {
-	String params = "/"+market+"/"+currency+"/"+locale+"/"+entityid+"/"+checkindate+"/"+checkoutdate+"/"+guests+"/"+rooms+"?apiKey="+apiKey;
-	return params;
+	return "/"+market+"/"+currency+"/"+locale+"/"+entityid+"/"+checkindate+"/"+checkoutdate+"/"+guests+"/"+rooms+"?apiKey="+apiKey;
+    }
+
+    private String buildPollParameters(int pageSize) {
+	String params = "&pageSize=%s";
+	return String.format(params,Integer.toString(pageSize));
     }
     
     public void createSession() throws Exception{
@@ -70,10 +74,10 @@ public class skyscannerHotel{
 	
     }
     
-    public String pollSession() throws Exception{
+    public String pollSession(int pageSize) throws Exception{
 	
-	String params = buildParameters();	
-	URL urlObj = new URL("http://partners.api.skyscanner.net" + sessionURL);
+	String params = buildPollParameters(pageSize);
+	URL urlObj = new URL("http://partners.api.skyscanner.net" + sessionURL + params);
 	
 	HttpURLConnection con = (HttpURLConnection) urlObj.openConnection();
 	con.setRequestMethod("GET");
