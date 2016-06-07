@@ -67,7 +67,6 @@ public class terminalVelocity {
     private void takeSearchDetails() {
 	Scanner scanner = new Scanner(System.in);
 	String input;
-	System.out.println(getToday());
 	//Destination name
 	System.out.println("Destination name:");
 	destination = formatDestination(scanner.nextLine());
@@ -142,7 +141,7 @@ public class terminalVelocity {
 
     private int chooseDestination() {
 	Scanner scanner = new Scanner(System.in);
-	System.out.println("Choose destination(#)");
+	System.out.println("Choose destination(#):");
 	return Integer.parseInt(scanner.nextLine()) - 1;
     }
     
@@ -152,7 +151,7 @@ public class terminalVelocity {
     
     private int chooseHotel() {
 	Scanner scanner = new Scanner(System.in);
-	System.out.println("Choose hotel(#)");
+	System.out.println("Choose hotel(#):");
 	return Integer.parseInt(scanner.nextLine());
     }
 
