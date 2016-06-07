@@ -101,7 +101,11 @@ public class DetailsPanel extends JPanel{
 
 		    text += guests.getSelectedItem() + "\n";
 		    text += guests.getSelectedItem() + "\n";
-		    
+
+		    if (validQuery && validCID && validCOD){
+			terminalVelocityGUI tV = new terminalVelocityGUI(text);
+		    }
+
 		    fireDetailEvent(new DetailEvent(this, text));
 		}
 	    });
