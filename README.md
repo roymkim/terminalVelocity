@@ -43,3 +43,19 @@ We are trying to create a terminal search engine that is able to look up prices 
 * Changed out json parsing library for another one(simple-json)
 * Results are parsed and printed out formatted
 * Class takes arguments for location and dates
+
+### 5/24/2016-5/25/2016
+* Worked on formatting the code to a more readable format
+
+### 5/26/2016 - 5/28/2016
+* Merging errors
+* Started a new branch called Roy2 
+* Methods and classes renamed for a more organized project
+* Began new concept of storing the Hotels as Objects rather than storing Hotel information in Strings
+* New Hotel Autosuggest Service replaced old one
+* Hotel and agent Ids are now able to be stored
+* Autosuggest is now able to print out country and city names
+
+### 5/30/2016 - 5/31/2016
+* Place and entityIDs are now able to be printed by the Hotel Autosuggest service
+* Hotel Session Objects and Hotel Entry Object are being developed
