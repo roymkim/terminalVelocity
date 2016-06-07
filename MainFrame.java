@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.text.*;
 
 public class MainFrame extends JFrame {
     private DetailsPanel detailsPanel;
@@ -10,18 +11,23 @@ public class MainFrame extends JFrame {
 
 	setLayout(new BorderLayout());
 
-	final JTextArea textArea = new JTextArea(15,10);	
-	textArea.setEditable(false);
+	StyleContext sc = new StyleContext();
+	final DefaultStyledDocument doc = new DefaultStyledDocument(sc);
+	JTextPane pane = new JTextPane(doc);
+	pane.setPreferredSize( new Dimension(300, 270));
+	pane.setEditable(false);
 
-	JScrollPane scrollPane = new JScrollPane(textArea);
+	JScrollPane scrollPane = new JScrollPane(pane);
 
 	detailsPanel = new DetailsPanel();
 
 	detailsPanel.addDetailListener(new DetailListener() {
 	    public void detailEventOccurred(DetailEvent event){
 		String text = event.getText();
-		
-		textArea.append(text);
+		try {
+		    doc.insertString(doc.getLength(), text, null);
+		} catch (BadLocationException e){
+		}
 	    }
 	});
 	
