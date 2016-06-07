@@ -8,7 +8,7 @@ import java.util.GregorianCalendar;
 import java.awt.Desktop;
 import java.net.URI;
 import java.text.SimpleDateFormat;
-import java.sql.Date;
+import java.util.Date;
 
 public class terminalVelocity {
     
@@ -47,6 +47,7 @@ public class terminalVelocity {
 	   
 	} catch (Exception e) { 
 	    System.out.println(e);
+	    System.exit(1);
 	}
     }
     
@@ -88,6 +89,13 @@ public class terminalVelocity {
 	} else {
 	    checkOutDate = input;
 	}
+
+	//Checks if dates entered are valid;
+	if (!validDates(checkInDate, checkOutDate)) {
+	    System.out.println("Invalid date(s): " + checkInDate + " - " + checkOutDate);
+	    System.exit(1);
+	}
+
 	//Number of Guests
 	System.out.println("Number of guests (Default 1):");
 	input = scanner.nextLine();
@@ -155,6 +163,7 @@ public class terminalVelocity {
 	    }
 	} catch (Exception e) {
 	    System.out.println(e);
+	    System.exit(1);
 	}
     }
 
@@ -173,8 +182,20 @@ public class terminalVelocity {
     }
 
     private boolean validDates(String date1, String date2) {
-	Date d1 = new Date(date1);
-	Date d2 = new Date(date2);
+	try {
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    Date d1 = sdf.parse(date1);
+	    Date d2 = sdf.parse(date2);
+	    Date t  = sdf.parse(getToday());
+	    if (t.compareTo(d1) > 0 || t.compareTo(d2) > 0) {
+		return false;
+	    } else if (d1.compareTo(d2) > 0) {
+		return false;
+	    }
+	} catch (Exception e) {
+	    return false;
+	}
+	return true;
     }
     
 
