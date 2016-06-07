@@ -59,3 +59,14 @@ We are trying to create a terminal search engine that is able to look up prices 
 ### 5/30/2016 - 5/31/2016
 * Place and entityIDs are now able to be printed by the Hotel Autosuggest service
 * Hotel Session Objects and Hotel Entry Object are being developed
+
+### 6/1/2016
+* Started the GUI
+
+### 6/2/2016 - 6/5/2016
+* Cleaned up unneccessary files
+* Continued work on Hotels
+* Continued work on GUI
+
+### 6/6/2016
+* Finished Terminal Hotels Search
