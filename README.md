@@ -2,8 +2,19 @@
 ##APCS Spring 2016 Final Project
 by Anthony Zeng and Roy Kim
 
+##Final Note:
+Unfortunately, we couldn't get the GUI working in time. However, we do have a fully functional version that works on the terminal.
+
 ##Description:
 We are trying to create a terminal search engine that is able to look up prices and details for hotels and flight fares. The user will be able to enter paramters to narrow their search.
+
+##Instructions:
+- javac terminalVelocity.java
+- run java terminalVelocity
+- Enter your parameters (There are defaults for some and those will be stated)
+- A list of results will be printed and you can navigate your options with your numpad or with your numbers
+- Choosing a hotel will open up a web page that will allow you to book it for the price you chose (depending on how fast you react)
+- if a skyscanner net null error appears, then something was wrong with your parameters. We did put restrictions on dates but some scenarios such as booking a hotel for 3 months, are events that we cannot take into account since the API is in charge of that.
 
 ##Objectives:
 * Ideally, we want to get the hotel search service working first because it is easier and more rudimentary. Flight fares are constantly changing and their multitude is too complicated to work with at first. We will use our ideas for our hotel search and apply them to flight fares later on.
