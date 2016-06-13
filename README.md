@@ -5,6 +5,9 @@ by Anthony Zeng and Roy Kim
 ##Final Note:
 Unfortunately, we couldn't get the GUI working in time. However, we do have a fully functional version that works on the terminal.
 
+###To Mr. K:
+I, Roy Kim, did not make commits to my branch for the beginning part of the project. I had problems with branching and did not branch at first. However, I made my commits in the master branch for the beginning and then I branched off to a branch called Roy. After a while, I had troubles in my branch and so I created a new branch called Roy2.
+
 ##Description:
 We are trying to create a terminal search engine that is able to look up prices and details for hotels and flight fares. The user will be able to enter paramters to narrow their search.
 
